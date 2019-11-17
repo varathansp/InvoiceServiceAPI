@@ -1,0 +1,74 @@
+﻿create database InvoiceDB
+
+use InvoiceDB
+
+create table CompanyInfo
+(
+CompanyID int identity(101,1) primary key,
+CompanyName varchar(50),
+CompanyAddress varchar(50) 
+)
+
+insert into CompanyInfo values('Mphasis','Chennai')
+insert into CompanyInfo values('Cooper','Chennai')
+
+Create table InvoiceInfo
+(
+CompanyID int  foreign key references CompanyInfo(CompanyID),
+InvoiceID varchar(50) primary key,
+DateID int,
+InvoiceDate date, 
+CustomerID varchar(20),
+ShippingAddress varchar(100),
+)
+
+
+select * from CompanyInfo
+select * from InvoiceInfo
+drop table InvoiceInfo
+drop procedure CreateInvoice
+
+create procedure CreateInvoice @companyID int,@customerID varchar(20),@shippingAddress varchar(100),@newid varchar(50) output
+as
+begin
+declare @count int
+declare @dateID int 
+declare @invoiceID varchar(50)
+select @count=count(InvoiceID) from InvoiceInfo where InvoiceDate=CONVERT(DATE, GETDATE())
+if(@count>0)
+begin
+select @dateID =max(DateID)+1 from InvoiceInfo where InvoiceDate=CONVERT(DATE, GETDATE())
+set @invoiceID=cast(@companyID as varchar)+ '-' +convert(varchar, getdate(), 112)+'-'+cast(@dateID as varchar)
+end
+else 
+begin
+set @dateID=1
+set @invoiceID=cast(@companyID as varchar)+ '-' +convert(varchar, getdate(), 112)+'-'+ cast(@dateID as varchar)
+end
+insert into InvoiceInfo values(@companyID,@invoiceID,@dateID,CONVERT(DATE, GETDATE()),@customerID,@shippingAddress) 
+select @newid= @invoiceID
+end
+
+declare @invoice varchar(50) 
+exec CreateInvoice 102,'1001','Mumbai',@invoice output
+select @invoice
+
+
+select * from InvoiceInfo
+truncate table InvoiceInfo
+SELECT convert(varchar, getdate(), 112)
+
+create procedure CreateCompany @companyName varchar(50),@companyAddress varchar(50),@newid int output
+as
+begin
+insert into CompanyInfo values(@companyName,@companyAddress)
+select @newid=SCOPE_IDENTITY()
+end
+
+drop procedure CreateCompany
+
+declare @id int
+exec CreateCompany 'Flipkart','Mumbai',@id output
+select @id
+
+select * from CompanyInfo

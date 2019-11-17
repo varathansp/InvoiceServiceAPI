@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="InvoiceDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CompanyInfo">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyName" Type="varchar" MaxLength="50" />
+          <Property Name="CompanyAddress" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="InvoiceInfo">
+          <Key>
+            <PropertyRef Name="InvoiceID" />
+          </Key>
+          <Property Name="CompanyID" Type="int" />
+          <Property Name="InvoiceID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DateID" Type="int" />
+          <Property Name="InvoiceDate" Type="date" />
+          <Property Name="CustomerID" Type="varchar" MaxLength="20" />
+          <Property Name="ShippingAddress" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <Association Name="FK__InvoiceIn__Compa__25869641">
+          <End Role="CompanyInfo" Type="Self.CompanyInfo" Multiplicity="0..1" />
+          <End Role="InvoiceInfo" Type="Self.InvoiceInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="InvoiceInfo">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="CreateCompany" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="companyName" Type="varchar" Mode="In" />
+          <Parameter Name="companyAddress" Type="varchar" Mode="In" />
+          <Parameter Name="newid" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="CreateInvoice" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="companyID" Type="int" Mode="In" />
+          <Parameter Name="customerID" Type="varchar" Mode="In" />
+          <Parameter Name="shippingAddress" Type="varchar" Mode="In" />
+          <Parameter Name="newid" Type="varchar" Mode="InOut" />
+        </Function>
+        <EntityContainer Name="InvoiceDBModelStoreContainer">
+          <EntitySet Name="CompanyInfo" EntityType="Self.CompanyInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InvoiceInfo" EntityType="Self.InvoiceInfo" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__InvoiceIn__Compa__25869641" Association="Self.FK__InvoiceIn__Compa__25869641">
+            <End Role="CompanyInfo" EntitySet="CompanyInfo" />
+            <End Role="InvoiceInfo" EntitySet="InvoiceInfo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="InvoiceDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CompanyInfo">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="InvoiceInfoes" Relationship="Self.FK__InvoiceIn__Compa__25869641" FromRole="CompanyInfo" ToRole="InvoiceInfo" />
+        </EntityType>
+        <EntityType Name="InvoiceInfo">
+          <Key>
+            <PropertyRef Name="InvoiceID" />
+          </Key>
+          <Property Name="CompanyID" Type="Int32" />
+          <Property Name="InvoiceID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateID" Type="Int32" />
+          <Property Name="InvoiceDate" Type="DateTime" Precision="0" />
+          <Property Name="CustomerID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ShippingAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CompanyInfo" Relationship="Self.FK__InvoiceIn__Compa__25869641" FromRole="InvoiceInfo" ToRole="CompanyInfo" />
+        </EntityType>
+        <Association Name="FK__InvoiceIn__Compa__25869641">
+          <End Role="CompanyInfo" Type="Self.CompanyInfo" Multiplicity="0..1" />
+          <End Role="InvoiceInfo" Type="Self.InvoiceInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="InvoiceInfo">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="InvoiceDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CompanyInfoes" EntityType="Self.CompanyInfo" />
+          <EntitySet Name="InvoiceInfoes" EntityType="Self.InvoiceInfo" />
+          <AssociationSet Name="FK__InvoiceIn__Compa__25869641" Association="Self.FK__InvoiceIn__Compa__25869641">
+            <End Role="CompanyInfo" EntitySet="CompanyInfoes" />
+            <End Role="InvoiceInfo" EntitySet="InvoiceInfoes" />
+          </AssociationSet>
+          <FunctionImport Name="CreateInvoice">
+            <Parameter Name="companyID" Mode="In" Type="Int32" />
+            <Parameter Name="customerID" Mode="In" Type="String" />
+            <Parameter Name="shippingAddress" Mode="In" Type="String" />
+            <Parameter Name="newid" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="CreateCompany">
+            <Parameter Name="companyName" Mode="In" Type="String" />
+            <Parameter Name="companyAddress" Mode="In" Type="String" />
+            <Parameter Name="newid" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="InvoiceDBModelStoreContainer" CdmEntityContainer="InvoiceDBEntities">
+          <EntitySetMapping Name="CompanyInfoes">
+            <EntityTypeMapping TypeName="InvoiceDBModel.CompanyInfo">
+              <MappingFragment StoreEntitySet="CompanyInfo">
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CompanyAddress" ColumnName="CompanyAddress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InvoiceInfoes">
+            <EntityTypeMapping TypeName="InvoiceDBModel.InvoiceInfo">
+              <MappingFragment StoreEntitySet="InvoiceInfo">
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
+                <ScalarProperty Name="DateID" ColumnName="DateID" />
+                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="ShippingAddress" ColumnName="ShippingAddress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="CreateInvoice" FunctionName="InvoiceDBModel.Store.CreateInvoice" />
+          <FunctionImportMapping FunctionImportName="CreateCompany" FunctionName="InvoiceDBModel.Store.CreateCompany" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

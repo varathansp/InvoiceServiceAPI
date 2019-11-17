@@ -1,0 +1,24 @@
+﻿Create Company Request [POST]
+---------------------------------------------------------------------------------------
+http://localhost:49193/api/Invoice/CreateCompany
+
+Host: localhost:49193
+User-Agent: Fiddler
+Content-Type: application/json
+Content-Length: 57
+
+
+{"companyname": "Snapdeal", "companyAddress": "New York"}
+----------------------------------------------------------------------------------------
+
+Create invoice Request [PUT]
+
+http://localhost:49193/api/Invoice/CreateInvoice
+
+Host: localhost:49193
+User-Agent: Fiddler
+Content-Type: application/json
+Content-Length: 70
+
+
+{"companyID": "101", "customerID": "9898","shippingAddress":"America"}

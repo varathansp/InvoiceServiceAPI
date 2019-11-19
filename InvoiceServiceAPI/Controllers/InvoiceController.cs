@@ -12,13 +12,17 @@ namespace InvoiceServiceAPI.Controllers
     public class InvoiceController : ApiController
     {
         [AcceptVerbs("GET")]
-        public string Get()
+        [HttpGet]
+        public HttpResponseMessage Get()
         {
-            return "Hitting API";
+            HttpResponseMessage httpResponseMessage= Request.CreateResponse(HttpStatusCode.OK,"Value11");
+            return httpResponseMessage;
+                
         }
         // GET api/Invoice/companyId
-        [AcceptVerbs("GET")]
-       
+        
+       [Route("api/Invoice/GetCompanyInvoice/{id}")]
+        [HttpGet]
         public IEnumerable<InvoiceInfo> GetCompanyInvoice(int id)
         {
             using (InvoiceDBEntities invoiceDBEntities = new InvoiceDBEntities())
@@ -32,7 +36,8 @@ namespace InvoiceServiceAPI.Controllers
 
         // GET api/Invoice/invoiceId
    
-        [AcceptVerbs("GET")]
+        [Route("api/Invoice/GetInvoiceInfo/{id}")]
+        [HttpGet]
         public InvoiceInfo GetInvoiceInfo(string id)
         {
             using (InvoiceDBEntities invoiceDBEntities = new InvoiceDBEntities())
@@ -44,7 +49,7 @@ namespace InvoiceServiceAPI.Controllers
 
         // POST api/values
         [HttpPost]
-        [ActionName("CreateCompany")]
+        [Route("api/Invoice/CreateCompany")]
         public int CreateCompany([FromBody]ICompany company)
         {
             using (InvoiceDBEntities invoiceDBEntities = new InvoiceDBEntities())
@@ -55,8 +60,8 @@ namespace InvoiceServiceAPI.Controllers
             }
                 
         }
-        [HttpPut]
-        [ActionName("CreateInvoice")]
+        [HttpPost]
+        [Route("api/Invoice/CreateInvoice")]
         public string CreateInvoice([FromBody]IInvoice invoice)
         {
             using (InvoiceDBEntities invoiceDBEntities = new InvoiceDBEntities())

@@ -24,7 +24,7 @@ namespace InvoiceClientApp
             client.BaseAddress = new Uri("http://localhost:49193/");
             client.DefaultRequestHeaders.Accept.Clear();
             var data = new { companyID = textID.Text,customerID=textCustomerID.Text, shippingAddress = textAddress.Text };
-            HttpResponseMessage response = await client.PutAsJsonAsync("api/Invoice/CreateInvoice", data);
+            HttpResponseMessage response = await client.PostAsJsonAsync("api/Invoice/CreateInvoice", data);
             if (response.IsSuccessStatusCode)
             {
                 // Get the URI of the created resource.

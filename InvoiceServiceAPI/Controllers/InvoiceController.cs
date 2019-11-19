@@ -13,6 +13,7 @@ namespace InvoiceServiceAPI.Controllers
     {
         [AcceptVerbs("GET")]
         [HttpGet]
+        [CustomAuthentication]
         public HttpResponseMessage Get()
         {
             HttpResponseMessage httpResponseMessage= Request.CreateResponse(HttpStatusCode.OK,"Value11");
